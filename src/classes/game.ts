@@ -6,8 +6,6 @@ const Player = require("./player.ts");
 const World = require("./world.ts");
 
 class Game {
-  static GRAVITY = 1.3;
-
   canvas: HTMLCanvasElement;
   ctx: CanvasRenderingContext2D;
   world: typeof World;

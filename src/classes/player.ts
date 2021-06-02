@@ -1,5 +1,4 @@
 const Camera = require("./camera.ts");
-const Game = require("./game.ts");
 const Coords = require("./coords.ts");
 const Direction = require("./direction.ts");
 const World = require("./world.ts");
@@ -8,6 +7,7 @@ class Player {
   static PLAYER_SCALE = 0.4;
   static PLAYER_WIDTH = 128 * Player.PLAYER_SCALE;
   static PLAYER_HEIGHT = 260 * Player.PLAYER_SCALE;
+  static PLAYER_GRAVITY = 9.8;
 
   position: typeof Coords;
   moveDirection: typeof Direction;
@@ -25,7 +25,7 @@ class Player {
     this.moveDirection = new Direction();
 
     this.isFalling = false;
-    this.jumpStrength = 60;
+    this.jumpStrength = 40;
     this.moveSpeed = 3;
 
     this.delta = new Coords(0, 0);
@@ -39,6 +39,38 @@ class Player {
   }
 
   move(world: typeof World) {
+    this.checkPlayerCollisionTop(world);
+    this.checkPlayerCollisionBottom(world);
+
+    if (this.isFalling) {
+      this.delta.y -= Player.PLAYER_GRAVITY;
+    }
+    // else {
+    //   this.delta.y = 0;
+    // }
+
+    if (this.delta.y < 0) {
+      this.position.y -= this.delta.y;
+
+      let newVal = this.delta.y + Player.PLAYER_GRAVITY;
+
+      if (newVal < 0) {
+        newVal = 0;
+      }
+
+      this.delta.y = newVal;
+    } else if (this.delta.y > 0) {
+      this.position.y -= this.delta.y;
+
+      let newVal = this.delta.y + Player.PLAYER_GRAVITY;
+
+      if (newVal > 0) {
+        newVal = 0;
+      }
+
+      this.delta.y = newVal;
+    }
+
     if (this.moveDirection.left) {
       this.position.x -= this.moveSpeed;
   
@@ -49,29 +81,9 @@ class Player {
   
       this.checkPlayerCanMoveRight(world);
     }
-    // if (this.moveDirection.up) {
-    //   this.position.y -= this.jumpStrength;
-    // }
-    // if (this.moveDirection.down) {
-    //   this.position.y += this.moveSpeed;
-    // }
-
-    if (this.isFalling) {
-      this.delta.y += Game.GRAVITY;
-    } else {
-      this.delta.y = 0;
+    if (this.moveDirection.up && !this.isFalling) {
+      this.delta.y += this.jumpStrength;
     }
-
-    if (this.delta.y > 0) {
-      this.position.y += this.delta.y;
-
-      this.delta.y = this.delta.y - Game.GRAVITY;
-
-      console.log(this.delta);
-    }
-  
-    this.checkPlayerCollisionTop(world);
-    this.checkPlayerCollisionBottom(world);
   }
 
   getPlayerBottomCoords(rightSide: boolean = false): typeof Coords {
@@ -113,19 +125,19 @@ class Player {
     return true;
   }
   
-  checkPlayerCollisionTop(world: typeof World): boolean {
-    let pLeftPos = new Coords(this.position.x, this.position.y);
+  checkPlayerCollisionTop(world: typeof World) {
+    let pLeftPos = new Coords(this.position.x, this.position.y - 1);
     let blockLeftPos = World.getBlockPositionByCoords(pLeftPos);
-    let pRightPos = new Coords(this.position.x + Player.PLAYER_WIDTH, this.position.y);
+    let pRightPos = new Coords(this.position.x + Player.PLAYER_WIDTH, this.position.y - 1);
     let blockRightPos = World.getBlockPositionByCoords(pRightPos);
   
     if (world.world[blockLeftPos.x][blockLeftPos.y] !== -1 || world.world[blockRightPos.x][blockRightPos.y] !== -1) {
       this.position.y = blockLeftPos.y * World.BLOCK_SIZE + World.BLOCK_SIZE;
-  
-      return false;
+
+      // this.position.y = blockLeftPos.y * World.BLOCK_SIZE - (World.BLOCK_SIZE * 4);
+
+      this.delta.y = 0;
     }
-  
-    return true;
   }
   
   checkPlayerCollisionBottom(world: typeof World) {
