@@ -1,3 +1,4 @@
+const Camera = require("./camera.ts");
 const Game = require("./game.ts");
 const Coords = require("./coords.ts");
 const Direction = require("./direction.ts");
@@ -33,8 +34,8 @@ class Player {
     this.skin.src = 'img/skin.png';
   }
 
-  drawPlayer(ctx: CanvasRenderingContext2D) {
-    ctx.drawImage(this.skin, 0, 0, 128, 260, this.position.x, this.position.y, Player.PLAYER_WIDTH, Player.PLAYER_HEIGHT);
+  drawPlayer(ctx: CanvasRenderingContext2D, camera: typeof Camera) {
+    ctx.drawImage(this.skin, 0, 0, 128, 260, this.position.x - camera.offset.x, this.position.y - camera.offset.y, Player.PLAYER_WIDTH, Player.PLAYER_HEIGHT);
   }
 
   move(world: typeof World) {
@@ -48,17 +49,25 @@ class Player {
   
       this.checkPlayerCanMoveRight(world);
     }
-    if (this.moveDirection.up) {
-      this.position.y -= this.jumpStrength;
-    }
-    if (this.moveDirection.down) {
-      this.position.y += this.moveSpeed;
-    }
+    // if (this.moveDirection.up) {
+    //   this.position.y -= this.jumpStrength;
+    // }
+    // if (this.moveDirection.down) {
+    //   this.position.y += this.moveSpeed;
+    // }
 
     if (this.isFalling) {
-      this.delta.y -= Game.GRAVITY;
+      this.delta.y += Game.GRAVITY;
     } else {
       this.delta.y = 0;
+    }
+
+    if (this.delta.y > 0) {
+      this.position.y += this.delta.y;
+
+      this.delta.y = this.delta.y - Game.GRAVITY;
+
+      console.log(this.delta);
     }
   
     this.checkPlayerCollisionTop(world);
@@ -127,7 +136,7 @@ class Player {
   
     if (world.world[blockLeftPos.x][blockLeftPos.y] !== -1 || world.world[blockRightPos.x][blockRightPos.y] !== -1) {
       this.isFalling = false;
-  
+      
       this.setPlayerPositionByBottomCoords(new Coords(this.position.x, blockLeftPos.y * World.BLOCK_SIZE - (World.BLOCK_SIZE * 4)));
     } else {
       this.isFalling = true;

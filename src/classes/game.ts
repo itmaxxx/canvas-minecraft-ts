@@ -129,7 +129,7 @@ class Game {
   
     this.world.renderBlocks(this.camera, this.canvas, this.ctx);
   
-    this.player.drawPlayer(this.ctx);
+    this.player.drawPlayer(this.ctx, this.camera);
   
     // drawInventoryBar();
   

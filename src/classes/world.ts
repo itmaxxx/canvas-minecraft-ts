@@ -20,12 +20,12 @@ class World {
     return new Coords((coords.x - coords.x % World.BLOCK_SIZE) / World.BLOCK_SIZE, (coords.y - coords.y % World.BLOCK_SIZE) / World.BLOCK_SIZE);
   }
 
-  drawBlock(ctx: CanvasRenderingContext2D, coords: typeof Coords, blockID: number) {
+  drawBlock(ctx: CanvasRenderingContext2D, coords: typeof Coords, blockID: number, camera: typeof Camera) {
     let tileOffsetX = blockID % World.TILE_SIZE * World.TILE_SIZE * 2;
     let tileOffsetY = (blockID - blockID % World.TILE_SIZE) * 2;
     let pos = new Coords(coords.x * World.BLOCK_SIZE, coords.y * World.BLOCK_SIZE);
   
-    ctx.drawImage(this.tileSet, tileOffsetX, tileOffsetY, World.TILE_SIZE * 2, World.TILE_SIZE * 2, pos.x, pos.y, World.BLOCK_SIZE, World.BLOCK_SIZE);
+    ctx.drawImage(this.tileSet, tileOffsetX, tileOffsetY, World.TILE_SIZE * 2, World.TILE_SIZE * 2, pos.x - camera.offset.x, pos.y - camera.offset.y, World.BLOCK_SIZE, World.BLOCK_SIZE);
   }
 
   renderBlocks(camera: typeof Camera, canvas: HTMLCanvasElement, ctx: CanvasRenderingContext2D) {
@@ -37,13 +37,13 @@ class World {
         screenVerticalEnd = camera.offset.y + canvas.width;
     let verticalBlockStart = (screenVerticalStart - (screenVerticalStart % 64)) / 64,
         verticalBlockEnd = (screenVerticalEnd - (screenVerticalEnd % 64)) / 64;
-  
+
     for (let y = 0; y < this.world.length; y++) {
       for (let x = 0; x < this.world[y].length; x++) {
         if (x >= horizontalBlockStart && x <= horizontalBlockEnd &&
             y >= verticalBlockStart && y <= verticalBlockEnd + 1) {
           if (this.world[x][y] !== -1) {
-            this.drawBlock(ctx, new Coords(x, y), this.world[x][y]);
+            this.drawBlock(ctx, new Coords(x, y), this.world[x][y], camera);
           }
         }
       }

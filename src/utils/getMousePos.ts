@@ -4,8 +4,8 @@ function getMousePos(canvas: HTMLCanvasElement, e: MouseEvent, offset: typeof Co
   let rect = canvas.getBoundingClientRect();
   
   return new Coords(
-    e.clientX - rect.left + (-offset.x),
-    e.clientY - rect.top + (-offset.y)
+    e.clientX - rect.left + offset.x,
+    e.clientY - rect.top + offset.y
   );
 }
 

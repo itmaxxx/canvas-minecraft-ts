@@ -5,11 +5,12 @@ class Inventory {
   slots: Array<typeof InventorySlot>;
 
   constructor() {
+    this.activeSlotNum = 0;
     this.slots = Array(9);
 
-    this.slots.forEach((inventorySlot, i) => {
-      inventorySlot = new InventorySlot(i, 64);
-    });
+    for (let i = 0; i < this.slots.length; i++) {
+      this.slots[i] = new InventorySlot(i + 1, 64);
+    }
   }
 
   getActiveSlot(): typeof InventorySlot {
