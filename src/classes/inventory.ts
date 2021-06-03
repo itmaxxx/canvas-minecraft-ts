@@ -1,8 +1,8 @@
-const InventorySlot = require("./inventorySlot.ts");
+import InventorySlot from "./inventorySlot";
 
 class Inventory {
   activeSlotNum: number;
-  slots: Array<typeof InventorySlot>;
+  slots: Array<InventorySlot>;
 
   constructor() {
     this.activeSlotNum = 0;
@@ -13,7 +13,7 @@ class Inventory {
     }
   }
 
-  getActiveSlot(): typeof InventorySlot {
+  getActiveSlot(): InventorySlot {
     return this.slots[this.activeSlotNum];
   }
 
@@ -24,4 +24,4 @@ class Inventory {
   }
 }
 
-export = Inventory;
+export default Inventory;

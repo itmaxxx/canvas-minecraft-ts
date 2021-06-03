@@ -1,7 +1,7 @@
-const Camera = require("./camera.ts");
-const Coords = require("./coords.ts");
-const Direction = require("./direction.ts");
-const World = require("./world.ts");
+import Camera from "./camera";
+import Coords from "./coords";
+import Direction from "./direction";
+import World from "./world";
 
 class Player {
   static PLAYER_SCALE = 0.4;
@@ -9,14 +9,14 @@ class Player {
   static PLAYER_HEIGHT = 260 * Player.PLAYER_SCALE;
   static PLAYER_GRAVITY = 9.8;
 
-  position: typeof Coords;
-  moveDirection: typeof Direction;
+  position: Coords;
+  moveDirection: Direction;
 
   isFalling: boolean;
   jumpStrength: number;
   moveSpeed: number;
 
-  delta: typeof Coords;
+  delta: Coords;
 
   skin: HTMLImageElement;
 
@@ -34,11 +34,11 @@ class Player {
     this.skin.src = 'img/skin.png';
   }
 
-  drawPlayer(ctx: CanvasRenderingContext2D, camera: typeof Camera) {
+  drawPlayer(ctx: CanvasRenderingContext2D, camera: Camera) {
     ctx.drawImage(this.skin, 0, 0, 128, 260, this.position.x - camera.offset.x, this.position.y - camera.offset.y, Player.PLAYER_WIDTH, Player.PLAYER_HEIGHT);
   }
 
-  move(world: typeof World) {
+  move(world: World) {
     this.checkPlayerCollisionTop(world);
     this.checkPlayerCollisionBottom(world);
 
@@ -86,16 +86,16 @@ class Player {
     }
   }
 
-  getPlayerBottomCoords(rightSide: boolean = false): typeof Coords {
+  getPlayerBottomCoords(rightSide: boolean = false): Coords {
     return new Coords(rightSide ? this.position.x + Player.PLAYER_WIDTH : this.position.x, this.position.y + Player.PLAYER_HEIGHT);
   }
   
-  setPlayerPositionByBottomCoords(coords: typeof Coords) {
+  setPlayerPositionByBottomCoords(coords: Coords) {
     this.position.x = coords.x;
     this.position.y = coords.y + Player.PLAYER_HEIGHT + ((World.BLOCK_SIZE * 2 - Player.PLAYER_HEIGHT) * 2);
   }
 
-  checkPlayerCanMoveLeft(world: typeof World): boolean {
+  checkPlayerCanMoveLeft(world: World): boolean {
     let pBottomPos = this.getPlayerBottomCoords();
     let blockBottomPos = World.getBlockPositionByCoords(new Coords(this.position.x, pBottomPos.y - 1));
     let blockMiddlePos = World.getBlockPositionByCoords(new Coords(this.position.x, this.position.y + (Player.PLAYER_HEIGHT / 2)));
@@ -110,7 +110,7 @@ class Player {
     return true;
   }
   
-  checkPlayerCanMoveRight(world: typeof World): boolean {
+  checkPlayerCanMoveRight(world: World): boolean {
     let pBottomPos = this.getPlayerBottomCoords(true);
     let blockBottomPos = World.getBlockPositionByCoords(new Coords(this.position.x + Player.PLAYER_WIDTH, pBottomPos.y - 1));
     let blockMiddlePos = World.getBlockPositionByCoords(new Coords(this.position.x + Player.PLAYER_WIDTH, this.position.y + (Player.PLAYER_HEIGHT / 2)));
@@ -125,7 +125,7 @@ class Player {
     return true;
   }
   
-  checkPlayerCollisionTop(world: typeof World) {
+  checkPlayerCollisionTop(world: World) {
     let pLeftPos = new Coords(this.position.x, this.position.y - 1);
     let blockLeftPos = World.getBlockPositionByCoords(pLeftPos);
     let pRightPos = new Coords(this.position.x + Player.PLAYER_WIDTH, this.position.y - 1);
@@ -140,7 +140,7 @@ class Player {
     }
   }
   
-  checkPlayerCollisionBottom(world: typeof World) {
+  checkPlayerCollisionBottom(world: World) {
     let pLeftPos = this.getPlayerBottomCoords(false);
     let blockLeftPos = World.getBlockPositionByCoords(pLeftPos);
     let pRightPos = this.getPlayerBottomCoords(true);
@@ -156,4 +156,4 @@ class Player {
   }
 }
 
-export = Player;
+export default Player;

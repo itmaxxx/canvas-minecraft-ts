@@ -1,5 +1,5 @@
-const Camera = require("./camera.ts");
-const Coords = require("./coords.ts");
+import Camera from "./camera";
+import Coords from "./coords";
 
 class World {
   static BLOCK_SIZE = 64;
@@ -16,11 +16,11 @@ class World {
     this.tileSet.src = 'img/textures.png';
   }
 
-  static getBlockPositionByCoords(coords: typeof Coords): typeof Coords {
+  static getBlockPositionByCoords(coords: Coords): Coords {
     return new Coords((coords.x - coords.x % World.BLOCK_SIZE) / World.BLOCK_SIZE, (coords.y - coords.y % World.BLOCK_SIZE) / World.BLOCK_SIZE);
   }
 
-  drawBlock(ctx: CanvasRenderingContext2D, coords: typeof Coords, blockID: number, camera: typeof Camera) {
+  drawBlock(ctx: CanvasRenderingContext2D, coords: Coords, blockID: number, camera: Camera) {
     let tileOffsetX = blockID % World.TILE_SIZE * World.TILE_SIZE * 2;
     let tileOffsetY = (blockID - blockID % World.TILE_SIZE) * 2;
     let pos = new Coords(coords.x * World.BLOCK_SIZE, coords.y * World.BLOCK_SIZE);
@@ -28,7 +28,7 @@ class World {
     ctx.drawImage(this.tileSet, tileOffsetX, tileOffsetY, World.TILE_SIZE * 2, World.TILE_SIZE * 2, pos.x - camera.offset.x, pos.y - camera.offset.y, World.BLOCK_SIZE, World.BLOCK_SIZE);
   }
 
-  renderBlocks(camera: typeof Camera, canvas: HTMLCanvasElement, ctx: CanvasRenderingContext2D) {
+  renderBlocks(camera: Camera, canvas: HTMLCanvasElement, ctx: CanvasRenderingContext2D) {
     let screenHorizontalStart = camera.offset.x,
         screenHorizontalEnd = camera.offset.x + canvas.width;
     let horizontalBlockStart = (screenHorizontalStart - (screenHorizontalStart % 64)) / 64,
@@ -71,4 +71,4 @@ class World {
   }
 }
 
-export = World;
+export default World;

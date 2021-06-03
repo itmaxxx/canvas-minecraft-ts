@@ -1,4 +1,4 @@
-const Game = require('./classes/game.ts');
+import Game from './classes/game';
 
 let game = new Game('game');
 

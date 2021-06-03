@@ -8,4 +8,4 @@ class Coords {
   }
 }
 
-export = Coords;
+export default Coords;

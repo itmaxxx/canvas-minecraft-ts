@@ -1,12 +1,12 @@
-const Coords = require("./coords.ts");
-const Direction = require("./direction.ts");
+import Coords from "./coords";
+import Direction from "./direction";
 
 class Camera {
-  offset: typeof Coords;
-  moveDirection: typeof Direction;
+  offset: Coords;
+  moveDirection: Direction;
   moveSpeed: number;
 
-  constructor(offset: typeof Coords) {
+  constructor(offset: Coords) {
     this.offset = offset;
     this.moveDirection = new Direction();
     this.moveSpeed = 6;
@@ -28,4 +28,4 @@ class Camera {
   }
 }
 
-export = Camera;
+export default Camera;

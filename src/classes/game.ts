@@ -1,17 +1,17 @@
-const getMousePos = require("../utils/getMousePos.ts");
-const Camera = require("./camera.ts");
-const Coords = require("./coords.ts");
-const Inventory = require("./inventory.ts");
-const Player = require("./player.ts");
-const World = require("./world.ts");
+import getMousePos from "../utils/getMousePos";
+import Camera from "./camera";
+import Coords from "./coords";
+import Inventory from "./inventory";
+import Player from "./player";
+import World from "./world";
 
 class Game {
   canvas: HTMLCanvasElement;
   ctx: CanvasRenderingContext2D;
-  world: typeof World;
-  camera: typeof Camera;
-  player: typeof Player;
-  inventory: typeof Inventory;
+  world: World;
+  camera: Camera;
+  player: Player;
+  inventory: Inventory;
 
   secondsPassed: number;
   oldTimeStamp: number;
@@ -153,4 +153,4 @@ class Game {
   }
 }
 
-export = Game;
+export default Game;

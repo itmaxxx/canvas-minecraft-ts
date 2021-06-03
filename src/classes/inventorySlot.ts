@@ -8,4 +8,4 @@ class InventorySlot {
   }
 }
 
-export = InventorySlot;
+export default InventorySlot;

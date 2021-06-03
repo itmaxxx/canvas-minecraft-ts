@@ -12,4 +12,4 @@ class Direction {
   }
 }
 
-export = Direction;
+export default Direction;

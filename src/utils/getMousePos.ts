@@ -1,6 +1,6 @@
-const Coords = require("../classes/coords.ts");
+import Coords from "../classes/coords";
 
-function getMousePos(canvas: HTMLCanvasElement, e: MouseEvent, offset: typeof Coords): typeof Coords {
+function getMousePos(canvas: HTMLCanvasElement, e: MouseEvent, offset: Coords): Coords {
   let rect = canvas.getBoundingClientRect();
   
   return new Coords(
@@ -9,4 +9,4 @@ function getMousePos(canvas: HTMLCanvasElement, e: MouseEvent, offset: typeof Co
   );
 }
 
-export = getMousePos;
+export default getMousePos;
