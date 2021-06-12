@@ -53,14 +53,6 @@ class Player {
 			this.velocity.y -= this.jumpStrength;
 		}
 
-    console.log(this.velocity.y);
-
-		if (this.velocity.y < 0) {
-
-		} else if (this.velocity.y > 0) {
-
-    }
-
     this.position.y += this.velocity.y;
 
 		this.checkPlayerCollisionTop(world);
