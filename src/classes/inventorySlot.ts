@@ -1,11 +1,11 @@
 class InventorySlot {
-  id: number;
-  quantity: number;
+	id: number;
+	quantity: number;
 
-  constructor(id: number, quantity: number) {
-    this.id = id;
-    this.quantity = quantity;
-  }
+	constructor(id: number, quantity: number) {
+		this.id = id;
+		this.quantity = quantity;
+	}
 }
 
 export default InventorySlot;

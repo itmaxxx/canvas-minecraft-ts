@@ -1,27 +1,27 @@
-import InventorySlot from "./inventorySlot";
+import InventorySlot from './inventorySlot';
 
 class Inventory {
-  activeSlotNum: number;
-  slots: Array<InventorySlot>;
+	activeSlotNum: number;
+	slots: Array<InventorySlot>;
 
-  constructor() {
-    this.activeSlotNum = 0;
-    this.slots = Array(9);
+	constructor() {
+		this.activeSlotNum = 0;
+		this.slots = Array(9);
 
-    for (let i = 0; i < this.slots.length; i++) {
-      this.slots[i] = new InventorySlot(i + 1, 64);
-    }
-  }
+		for (let i = 0; i < this.slots.length; i++) {
+			this.slots[i] = new InventorySlot(i + 1, 64);
+		}
+	}
 
-  getActiveSlot(): InventorySlot {
-    return this.slots[this.activeSlotNum];
-  }
+	getActiveSlot(): InventorySlot {
+		return this.slots[this.activeSlotNum];
+	}
 
-  setActiveSlotNum(num: number) {
-    if (num < 1 || num > 9) return; 
+	setActiveSlotNum(num: number) {
+		if (num < 1 || num > 9) return;
 
-    this.activeSlotNum = num;
-  }
+		this.activeSlotNum = num;
+	}
 }
 
 export default Inventory;
