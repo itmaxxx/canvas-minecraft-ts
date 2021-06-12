@@ -102,9 +102,9 @@ class Player {
 		let blockTopPos = World.getBlockPositionByCoords(this.position);
 
 		if (
-			world.world[blockBottomPos.x][blockBottomPos.y] !== -1 ||
-			world.world[blockMiddlePos.x][blockMiddlePos.y] !== -1 ||
-			world.world[blockTopPos.x][blockTopPos.y] !== -1
+			world.world[blockBottomPos.x][blockBottomPos.y].solid ||
+			world.world[blockMiddlePos.x][blockMiddlePos.y].solid ||
+			world.world[blockTopPos.x][blockTopPos.y].solid
 		) {
 			this.position.x = blockBottomPos.x * World.BLOCK_SIZE + World.BLOCK_SIZE;
 
@@ -127,9 +127,9 @@ class Player {
 		);
 
 		if (
-			world.world[blockBottomPos.x][blockBottomPos.y] !== -1 ||
-			world.world[blockMiddlePos.x][blockMiddlePos.y] !== -1 ||
-			world.world[blockTopPos.x][blockTopPos.y] !== -1
+			world.world[blockBottomPos.x][blockBottomPos.y].solid ||
+			world.world[blockMiddlePos.x][blockMiddlePos.y].solid ||
+			world.world[blockTopPos.x][blockTopPos.y].solid
 		) {
 			this.position.x = blockBottomPos.x * World.BLOCK_SIZE - Player.PLAYER_WIDTH - 0.1;
 
@@ -145,7 +145,7 @@ class Player {
 		let pRightPos = new Coords(this.position.x + Player.PLAYER_WIDTH, this.position.y - 1);
 		let blockRightPos = World.getBlockPositionByCoords(pRightPos);
 
-		if (world.world[blockLeftPos.x][blockLeftPos.y] !== -1 || world.world[blockRightPos.x][blockRightPos.y] !== -1) {
+		if (world.world[blockLeftPos.x][blockLeftPos.y].solid || world.world[blockRightPos.x][blockRightPos.y].solid) {
 			this.position.y = blockLeftPos.y * World.BLOCK_SIZE + World.BLOCK_SIZE;
 
 			this.velocity.y = 0;
@@ -158,7 +158,7 @@ class Player {
 		let pRightPos = this.getPlayerBottomCoords(true);
 		let blockRightPos = World.getBlockPositionByCoords(pRightPos);
 
-		if (world.world[blockLeftPos.x][blockLeftPos.y] !== -1 || world.world[blockRightPos.x][blockRightPos.y] !== -1) {
+		if (world.world[blockLeftPos.x][blockLeftPos.y].solid || world.world[blockRightPos.x][blockRightPos.y].solid) {
 			this.isFalling = false;
       this.velocity.y = 0;
 

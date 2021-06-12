@@ -1,4 +1,5 @@
 import getMousePos from '../utils/getMousePos';
+import { Air } from './blockTypes';
 import Camera from './camera';
 import Coords from './coords';
 import Inventory from './inventory';
@@ -37,8 +38,8 @@ class Game {
 			(pos.y - (pos.y % World.BLOCK_SIZE)) / World.BLOCK_SIZE
 		);
 
-		if (this.world.world[blockPos.x][blockPos.y] !== -1) {
-			this.world.world[blockPos.x][blockPos.y] = -1;
+		if (this.world.world[blockPos.x][blockPos.y].id !== -1) {
+			this.world.world[blockPos.x][blockPos.y] = Air;
 		}
 	}
 
@@ -51,8 +52,8 @@ class Game {
 			(pos.y - (pos.y % World.BLOCK_SIZE)) / World.BLOCK_SIZE
 		);
 
-		if (this.world.world[blockPos.x][blockPos.y] === -1) {
-			this.world.world[blockPos.x][blockPos.y] = this.inventory.getActiveSlot().id;
+		if (this.world.world[blockPos.x][blockPos.y].id === -1 && this.inventory.getActiveSlot().block.id !== -1) {
+			this.world.world[blockPos.x][blockPos.y] = this.inventory.getActiveSlot().block;
 		}
 	}
 

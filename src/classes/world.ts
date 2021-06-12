@@ -1,3 +1,5 @@
+import { Block } from './block';
+import { Dirt, Stone, Grass, Air } from './blockTypes';
 import Camera from './camera';
 import Coords from './coords';
 
@@ -7,7 +9,7 @@ class World {
 	static WORLD_WIDTH = 120;
 	static WORLD_HEIGHT = 60;
 
-	world: Array<Array<number>>;
+	world: Array<Array<Block>>;
 	tileSet: HTMLImageElement;
 
 	constructor() {
@@ -23,9 +25,9 @@ class World {
 		);
 	}
 
-	drawBlock(ctx: CanvasRenderingContext2D, coords: Coords, blockID: number, camera: Camera) {
-		let tileOffsetX = (blockID % World.TILE_SIZE) * World.TILE_SIZE * 2;
-		let tileOffsetY = (blockID - (blockID % World.TILE_SIZE)) * 2;
+	drawBlock(ctx: CanvasRenderingContext2D, coords: Coords, block: Block, camera: Camera) {
+		let tileOffsetX = (block.id % World.TILE_SIZE) * World.TILE_SIZE * 2;
+		let tileOffsetY = (block.id - (block.id % World.TILE_SIZE)) * 2;
 		let pos = new Coords(coords.x * World.BLOCK_SIZE, coords.y * World.BLOCK_SIZE);
 
 		ctx.drawImage(
@@ -59,7 +61,7 @@ class World {
 					y >= verticalBlockStart &&
 					y <= verticalBlockEnd + 1
 				) {
-					if (this.world[x][y] !== -1) {
+					if (this.world[x][y].id !== -1) {
 						this.drawBlock(ctx, new Coords(x, y), this.world[x][y], camera);
 					}
 				}
@@ -69,17 +71,17 @@ class World {
 
 	generateWorld() {
 		for (let x = 0; x < World.WORLD_WIDTH; x++) {
-			let row = [];
+			let row: Array<Block> = [];
 
 			for (let y = 0; y < World.WORLD_HEIGHT; y++) {
 				if (y > 10) {
-					row.push(1);
+					row.push(Stone);
 				} else if (y > 8) {
-					row.push(2);
+					row.push(Dirt);
 				} else if (y > 7) {
-					row.push(3);
+					row.push(Grass);
 				} else {
-					row.push(-1);
+					row.push(Air);
 				}
 			}
 

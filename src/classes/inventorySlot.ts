@@ -1,9 +1,11 @@
+import { Block } from "./block";
+
 class InventorySlot {
-	id: number;
+	block: Block;
 	quantity: number;
 
-	constructor(id: number, quantity: number) {
-		this.id = id;
+	constructor(block: Block, quantity: number) {
+		this.block = block;
 		this.quantity = quantity;
 	}
 }
