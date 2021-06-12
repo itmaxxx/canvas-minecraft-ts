@@ -7,7 +7,7 @@ class Player {
 	static PLAYER_SCALE = 0.4;
 	static PLAYER_WIDTH = 128 * Player.PLAYER_SCALE;
 	static PLAYER_HEIGHT = 260 * Player.PLAYER_SCALE;
-	static PLAYER_GRAVITY = 4;
+	static PLAYER_GRAVITY = 2.5;
 
 	position: Coords;
 	moveDirection: Direction;
@@ -15,6 +15,7 @@ class Player {
 
 	isFalling: boolean;
 	jumpStrength: number;
+  lastJump: number;
 	moveSpeed: number;
 
 	skin: HTMLImageElement;
@@ -25,7 +26,8 @@ class Player {
 		this.velocity = new Coords(0, 0);
 
 		this.isFalling = false;
-		this.jumpStrength = 26;
+		this.jumpStrength = 23;
+    this.lastJump = 0;
 		this.moveSpeed = 3;
 
 		this.skin = new Image();
@@ -49,8 +51,9 @@ class Player {
 	move(world: World) {
 		if (this.isFalling) {
 			this.velocity.y += Player.PLAYER_GRAVITY;
-		} else if (this.moveDirection.up) {
+		} else if (this.moveDirection.up && Date.now() - this.lastJump > 400) {
 			this.velocity.y -= this.jumpStrength;
+      this.lastJump = Date.now();
 		}
 
     this.position.y += this.velocity.y;
