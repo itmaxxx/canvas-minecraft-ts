@@ -31,6 +31,16 @@ class Game {
 		this.fps = 0;
 	}
 
+	handleMouseMove(e: MouseEvent) {
+		let pos = getMousePos(this.canvas, e, this.camera.offset);
+		let blockPos = new Coords(
+			(pos.x - (pos.x % World.BLOCK_SIZE)) / World.BLOCK_SIZE,
+			(pos.y - (pos.y % World.BLOCK_SIZE)) / World.BLOCK_SIZE
+		);
+
+		
+	}
+
 	handleMouseClick(e: MouseEvent) {
 		let pos = getMousePos(this.canvas, e, this.camera.offset);
 		let blockPos = new Coords(
@@ -51,6 +61,15 @@ class Game {
 			(pos.x - (pos.x % World.BLOCK_SIZE)) / World.BLOCK_SIZE,
 			(pos.y - (pos.y % World.BLOCK_SIZE)) / World.BLOCK_SIZE
 		);
+
+		if ((blockPos.x * World.BLOCK_SIZE >= this.player.position.x && blockPos.x * World.BLOCK_SIZE <= this.player.position.x + Player.PLAYER_WIDTH ||
+				 blockPos.x * World.BLOCK_SIZE + World.BLOCK_SIZE >= this.player.position.x && blockPos.x * World.BLOCK_SIZE + World.BLOCK_SIZE <= this.player.position.x + Player.PLAYER_WIDTH ||
+				 blockPos.x * World.BLOCK_SIZE + World.BLOCK_SIZE / 2 >= this.player.position.x && blockPos.x * World.BLOCK_SIZE + World.BLOCK_SIZE / 2 <= this.player.position.x + Player.PLAYER_WIDTH) &&
+				(blockPos.y * World.BLOCK_SIZE > this.player.position.y && blockPos.y * World.BLOCK_SIZE < this.player.position.y + Player.PLAYER_HEIGHT ||
+				 blockPos.y * World.BLOCK_SIZE + World.BLOCK_SIZE > this.player.position.y && blockPos.y * World.BLOCK_SIZE + World.BLOCK_SIZE < this.player.position.y + Player.PLAYER_HEIGHT ||
+				 blockPos.y * World.BLOCK_SIZE + World.BLOCK_SIZE / 2 > this.player.position.y && blockPos.y * World.BLOCK_SIZE + World.BLOCK_SIZE / 2 < this.player.position.y + Player.PLAYER_HEIGHT)) {
+			return console.log('block intersects with player');
+		}
 
 		if (this.world.world[blockPos.x][blockPos.y].id === -1 && this.inventory.getActiveSlot().block.id !== -1) {
 			this.world.world[blockPos.x][blockPos.y] = this.inventory.getActiveSlot().block;
@@ -152,10 +171,13 @@ class Game {
 	}
 
 	init() {
+		this.canvas.addEventListener('mousemove', (e: MouseEvent) => this.handleMouseMove(e));
 		this.canvas.addEventListener('click', (e: MouseEvent) => this.handleMouseClick(e));
 		this.canvas.addEventListener('contextmenu', (e: MouseEvent) => this.handleContextMenuClick(e));
 		document.getElementsByTagName('body')[0].addEventListener('keydown', (e: KeyboardEvent) => this.handleKeyDown(e));
 		document.getElementsByTagName('body')[0].addEventListener('keyup', (e: KeyboardEvent) => this.handleKeyUp(e));
+
+		this.canvas.setAttribute('style', 'cursor: url("img/crosshair.png") 8 8, default;');
 
 		this.canvas.width = window.innerWidth;
 		this.canvas.height = window.innerHeight;
