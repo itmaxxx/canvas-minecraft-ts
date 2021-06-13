@@ -1,5 +1,5 @@
 import InventorySlot from './inventorySlot';
-import { Grass, Dirt, Stone, Air, BackgroundDirt } from './blockTypes';
+import { Grass, Dirt, Stone, Air, BackgroundDirt, Ladder } from './blockTypes';
 
 class Inventory {
 	activeSlotNum: number;
@@ -17,6 +17,7 @@ class Inventory {
 		this.slots[1] = new InventorySlot(Dirt, 64);
 		this.slots[2] = new InventorySlot(Stone, 64);
 		this.slots[3] = new InventorySlot(BackgroundDirt, 64);
+		this.slots[4] = new InventorySlot(Ladder, 64);
 	}
 
 	getActiveSlot(): InventorySlot {

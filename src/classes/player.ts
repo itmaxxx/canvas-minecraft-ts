@@ -14,6 +14,7 @@ class Player {
 	velocity: Coords;
 
 	isFalling: boolean;
+	isClimbing: boolean;
 	jumpStrength: number;
   lastJump: number;
 	moveSpeed: number;
@@ -26,6 +27,7 @@ class Player {
 		this.velocity = new Coords(0, 0);
 
 		this.isFalling = false;
+		this.isClimbing = true;
 		this.jumpStrength = 23;
     this.lastJump = 0;
 		this.moveSpeed = 3;
@@ -49,9 +51,17 @@ class Player {
 	}
 
 	move(world: World) {
+		if (this.isClimbing && this.moveDirection.up) {
+			this.velocity.y = -2.5;
+		} else if (this.isClimbing) {
+			this.velocity.y = 1.5;
+		}
+
 		if (this.isFalling) {
-			this.velocity.y += Player.PLAYER_GRAVITY;
-		} else if (this.moveDirection.up && Date.now() - this.lastJump > 400) {
+			if (!this.isClimbing) {
+				this.velocity.y += Player.PLAYER_GRAVITY;
+			}
+		} else if (this.moveDirection.up && Date.now() - this.lastJump > 400 && !this.isClimbing) {
 			this.velocity.y -= this.jumpStrength;
       this.lastJump = Date.now();
 		}
