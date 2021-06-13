@@ -1,5 +1,5 @@
 import { Block } from './block';
-import { Dirt, Stone, Grass, Air } from './blockTypes';
+import { Dirt, Stone, Grass, Air, TargetBlock } from './blockTypes';
 import Camera from './camera';
 import Coords from './coords';
 
@@ -10,12 +10,15 @@ class World {
 	static WORLD_HEIGHT = 60;
 
 	world: Array<Array<Block>>;
-	tileSet: HTMLImageElement;
+	tileSetForeground: HTMLImageElement;
+	tileSetBackground: HTMLImageElement;
 
 	constructor() {
 		this.world = new Array();
-		this.tileSet = new Image();
-		this.tileSet.src = 'img/textures.png';
+		this.tileSetForeground = new Image();
+		this.tileSetForeground.src = 'img/texturesForeground.png';
+		this.tileSetBackground = new Image();
+		this.tileSetBackground.src = 'img/texturesBackground.png';
 	}
 
 	static getBlockPositionByCoords(coords: Coords): Coords {
@@ -25,13 +28,13 @@ class World {
 		);
 	}
 
-	drawBlock(ctx: CanvasRenderingContext2D, coords: Coords, block: Block, camera: Camera) {
+	drawBlock(tileset: HTMLImageElement, ctx: CanvasRenderingContext2D, coords: Coords, block: Block, camera: Camera) {
 		let tileOffsetX = (block.id % World.TILE_SIZE) * World.TILE_SIZE * 2;
 		let tileOffsetY = (block.id - (block.id % World.TILE_SIZE)) * 2;
 		let pos = new Coords(coords.x * World.BLOCK_SIZE, coords.y * World.BLOCK_SIZE);
 
 		ctx.drawImage(
-			this.tileSet,
+			tileset,
 			tileOffsetX,
 			tileOffsetY,
 			World.TILE_SIZE * 2,
@@ -41,6 +44,10 @@ class World {
 			World.BLOCK_SIZE,
 			World.BLOCK_SIZE
 		);
+	}
+
+	drawTargetBlock(ctx: CanvasRenderingContext2D, coords: Coords, camera: Camera) {
+		this.drawBlock(this.tileSetForeground, ctx, coords, TargetBlock, camera);
 	}
 
 	renderBlocks(camera: Camera, canvas: HTMLCanvasElement, ctx: CanvasRenderingContext2D) {
@@ -62,7 +69,7 @@ class World {
 					y <= verticalBlockEnd + 1
 				) {
 					if (this.world[x][y].id !== -1) {
-						this.drawBlock(ctx, new Coords(x, y), this.world[x][y], camera);
+						this.drawBlock(this.world[x][y].solid ? this.tileSetForeground : this.tileSetBackground, ctx, new Coords(x, y), this.world[x][y], camera);
 					}
 				}
 			}

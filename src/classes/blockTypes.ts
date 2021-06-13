@@ -1,5 +1,6 @@
 import { Block, BlockStrength } from './block';
 
+export const TargetBlock = new Block(41, false, false, BlockStrength.INDESTRUCTABLE);
 export const Air = new Block(-1, false, false, BlockStrength.WEAK);
 export const Stone = new Block(1, true, false, BlockStrength.STRONG);
 export const Dirt = new Block(2, true, false, BlockStrength.WEAK);

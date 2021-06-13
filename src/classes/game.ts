@@ -13,6 +13,7 @@ class Game {
 	camera: Camera;
 	player: Player;
 	inventory: Inventory;
+	targetBlockPosition: Coords;
 
 	secondsPassed: number;
 	oldTimeStamp: number;
@@ -25,6 +26,7 @@ class Game {
 		this.camera = new Camera(new Coords(0, 0));
 		this.player = new Player();
 		this.inventory = new Inventory();
+		this.targetBlockPosition = new Coords(0, 0);
 
 		this.secondsPassed = 0;
 		this.oldTimeStamp = 0;
@@ -33,12 +35,10 @@ class Game {
 
 	handleMouseMove(e: MouseEvent) {
 		let pos = getMousePos(this.canvas, e, this.camera.offset);
-		let blockPos = new Coords(
+		this.targetBlockPosition = new Coords(
 			(pos.x - (pos.x % World.BLOCK_SIZE)) / World.BLOCK_SIZE,
 			(pos.y - (pos.y % World.BLOCK_SIZE)) / World.BLOCK_SIZE
 		);
-
-		
 	}
 
 	handleMouseClick(e: MouseEvent) {
@@ -62,13 +62,15 @@ class Game {
 			(pos.y - (pos.y % World.BLOCK_SIZE)) / World.BLOCK_SIZE
 		);
 
-		if ((blockPos.x * World.BLOCK_SIZE >= this.player.position.x && blockPos.x * World.BLOCK_SIZE <= this.player.position.x + Player.PLAYER_WIDTH ||
-				 blockPos.x * World.BLOCK_SIZE + World.BLOCK_SIZE >= this.player.position.x && blockPos.x * World.BLOCK_SIZE + World.BLOCK_SIZE <= this.player.position.x + Player.PLAYER_WIDTH ||
-				 blockPos.x * World.BLOCK_SIZE + World.BLOCK_SIZE / 2 >= this.player.position.x && blockPos.x * World.BLOCK_SIZE + World.BLOCK_SIZE / 2 <= this.player.position.x + Player.PLAYER_WIDTH) &&
-				(blockPos.y * World.BLOCK_SIZE > this.player.position.y && blockPos.y * World.BLOCK_SIZE < this.player.position.y + Player.PLAYER_HEIGHT ||
-				 blockPos.y * World.BLOCK_SIZE + World.BLOCK_SIZE > this.player.position.y && blockPos.y * World.BLOCK_SIZE + World.BLOCK_SIZE < this.player.position.y + Player.PLAYER_HEIGHT ||
-				 blockPos.y * World.BLOCK_SIZE + World.BLOCK_SIZE / 2 > this.player.position.y && blockPos.y * World.BLOCK_SIZE + World.BLOCK_SIZE / 2 < this.player.position.y + Player.PLAYER_HEIGHT)) {
-			return console.log('block intersects with player');
+		if (this.inventory.getActiveSlot().block.solid) {
+			if ((blockPos.x * World.BLOCK_SIZE >= this.player.position.x && blockPos.x * World.BLOCK_SIZE <= this.player.position.x + Player.PLAYER_WIDTH ||
+					 blockPos.x * World.BLOCK_SIZE + World.BLOCK_SIZE >= this.player.position.x && blockPos.x * World.BLOCK_SIZE + World.BLOCK_SIZE <= this.player.position.x + Player.PLAYER_WIDTH ||
+					 blockPos.x * World.BLOCK_SIZE + World.BLOCK_SIZE / 2 >= this.player.position.x && blockPos.x * World.BLOCK_SIZE + World.BLOCK_SIZE / 2 <= this.player.position.x + Player.PLAYER_WIDTH) &&
+				  (blockPos.y * World.BLOCK_SIZE > this.player.position.y && blockPos.y * World.BLOCK_SIZE < this.player.position.y + Player.PLAYER_HEIGHT ||
+					 blockPos.y * World.BLOCK_SIZE + World.BLOCK_SIZE > this.player.position.y && blockPos.y * World.BLOCK_SIZE + World.BLOCK_SIZE < this.player.position.y + Player.PLAYER_HEIGHT ||
+					 blockPos.y * World.BLOCK_SIZE + World.BLOCK_SIZE / 2 > this.player.position.y && blockPos.y * World.BLOCK_SIZE + World.BLOCK_SIZE / 2 < this.player.position.y + Player.PLAYER_HEIGHT)) {
+				return console.log('block intersects with player');
+			}
 		}
 
 		if (this.world.world[blockPos.x][blockPos.y].id === -1 && this.inventory.getActiveSlot().block.id !== -1) {
@@ -152,6 +154,7 @@ class Game {
 		this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
 
 		this.world.renderBlocks(this.camera, this.canvas, this.ctx);
+		this.world.drawTargetBlock(this.ctx, this.targetBlockPosition, this.camera);
 
 		this.player.drawPlayer(this.ctx, this.camera);
 
