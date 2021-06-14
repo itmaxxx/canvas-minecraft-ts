@@ -27,7 +27,7 @@ class Player {
 		this.velocity = new Coords(0, 0);
 
 		this.isFalling = false;
-		this.isClimbing = true;
+		this.isClimbing = false;
 		this.jumpStrength = 23;
     this.lastJump = 0;
 		this.moveSpeed = 3;
@@ -54,7 +54,7 @@ class Player {
 		if (this.isClimbing && this.moveDirection.up) {
 			this.velocity.y = -2.5;
 		} else if (this.isClimbing) {
-			this.velocity.y = 1.5;
+			this.velocity.y = 1.8;
 		}
 
 		if (this.isFalling) {

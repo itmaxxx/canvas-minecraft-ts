@@ -140,11 +140,24 @@ class Game {
 		}
 	}
 
+	checkPlayerClimbing() {
+		let playerPos = new Coords(this.player.position.x + Player.PLAYER_WIDTH / 2, this.player.position.y + Player.PLAYER_HEIGHT / 2);
+		let playerBlockPos = new Coords((playerPos.x - playerPos.x % 64) / World.BLOCK_SIZE, (playerPos.y - playerPos.y % 64) / World.BLOCK_SIZE);
+
+		if (this.world.world[playerBlockPos.x][playerBlockPos.y].climbing) {
+			this.player.isClimbing = true;
+		} else {
+			this.player.isClimbing = false;
+		}
+	}
+
 	gameLoop(timeStamp: number) {
 		this.secondsPassed = (timeStamp - this.oldTimeStamp) / 1000;
 		this.oldTimeStamp = timeStamp;
 
 		this.fps = Math.round(1 / this.secondsPassed);
+
+		this.checkPlayerClimbing();
 
 		this.player.move(this.world);
 
