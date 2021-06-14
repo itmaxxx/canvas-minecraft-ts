@@ -105,18 +105,21 @@ class Game {
 				case 'KeyS':
 					this.player.moveDirection.down = true;
 					break;
-				case 'ArrowLeft':
-					this.camera.moveDirection.left = true;
+				case 'Space':
+					this.player.jumpPressed = true;
 					break;
-				case 'ArrowRight':
-					this.camera.moveDirection.right = true;
-					break;
-				case 'ArrowUp':
-					this.camera.moveDirection.up = true;
-					break;
-				case 'ArrowDown':
-					this.camera.moveDirection.down = true;
-					break;
+				// case 'ArrowLeft':
+				// 	this.camera.moveDirection.left = true;
+				// 	break;
+				// case 'ArrowRight':
+				// 	this.camera.moveDirection.right = true;
+				// 	break;
+				// case 'ArrowUp':
+				// 	this.camera.moveDirection.up = true;
+				// 	break;
+				// case 'ArrowDown':
+				// 	this.camera.moveDirection.down = true;
+				// 	break;
 				case 'Enter':
 					let blocksNamesList = Object.keys(require('./blocksTypes'));
 					let blockListText = blocksNamesList.map((b, i) => i + ':' + b);
@@ -148,18 +151,22 @@ class Game {
 			case 'KeyS':
 				this.player.moveDirection.down = false;
 				break;
-			case 'ArrowLeft':
-				this.camera.moveDirection.left = false;
+			case 'Space':
+				this.player.jumpPressed = false;
+				this.player.canJump = true;
 				break;
-			case 'ArrowRight':
-				this.camera.moveDirection.right = false;
-				break;
-			case 'ArrowUp':
-				this.camera.moveDirection.up = false;
-				break;
-			case 'ArrowDown':
-				this.camera.moveDirection.down = false;
-				break;
+			// case 'ArrowLeft':
+			// 	this.camera.moveDirection.left = false;
+			// 	break;
+			// case 'ArrowRight':
+			// 	this.camera.moveDirection.right = false;
+			// 	break;
+			// case 'ArrowUp':
+			// 	this.camera.moveDirection.up = false;
+			// 	break;
+			// case 'ArrowDown':
+			// 	this.camera.moveDirection.down = false;
+			// 	break;
 		}
 	}
 
@@ -190,7 +197,10 @@ class Game {
 
 		this.player.move(this.world);
 
-		this.camera.move();
+		this.camera.offset = new Coords(
+			this.player.position.x - this.canvas.width / 2 + Player.PLAYER_WIDTH,
+			this.player.position.y - this.canvas.height / 2 + Player.PLAYER_HEIGHT
+		);
 
 		this.ctx.fillStyle = '#87ceeb';
 		this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);

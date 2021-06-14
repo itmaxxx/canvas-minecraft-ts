@@ -15,6 +15,8 @@ class Player {
 
 	isFalling: boolean;
 	isClimbing: boolean;
+	jumpPressed: boolean;
+	canJump: boolean;
 	jumpStrength: number;
 	lastJump: number;
 	moveSpeed: number;
@@ -28,6 +30,8 @@ class Player {
 
 		this.isFalling = false;
 		this.isClimbing = false;
+		this.jumpPressed = false;
+		this.canJump = true;
 		this.jumpStrength = 23;
 		this.lastJump = 0;
 		this.moveSpeed = 3;
@@ -61,9 +65,13 @@ class Player {
 			if (!this.isClimbing) {
 				this.velocity.y += Player.PLAYER_GRAVITY;
 			}
-		} else if (this.moveDirection.up && Date.now() - this.lastJump > 400 && !this.isClimbing) {
+		} else if (this.jumpPressed && this.canJump && Date.now() - this.lastJump > 420 && !this.isClimbing) {
 			this.velocity.y -= this.jumpStrength;
 			this.lastJump = Date.now();
+
+			if (this.jumpPressed) {
+				this.canJump = false;
+			}
 		}
 
 		this.position.y += this.velocity.y;
