@@ -34,7 +34,7 @@ class Player {
 		this.canJump = true;
 		this.jumpStrength = 23;
 		this.lastJump = 0;
-		this.moveSpeed = 3;
+		this.moveSpeed = 5;
 
 		this.skin = new Image();
 		this.skin.src = 'img/skin.png';
@@ -163,7 +163,10 @@ class Player {
 		let pRightPos = new Coords(this.position.x + Player.PLAYER_WIDTH, this.position.y - 1);
 		let blockRightPos = World.getBlockPositionByCoords(pRightPos);
 
-		if (world.world[blockLeftPos.x][blockLeftPos.y].solid || world.world[blockRightPos.x][blockRightPos.y].solid) {
+		if (
+			(world.world[blockLeftPos.x][blockLeftPos.y] && world.world[blockLeftPos.x][blockLeftPos.y].solid) ||
+			(world.world[blockRightPos.x][blockRightPos.y] && world.world[blockRightPos.x][blockRightPos.y].solid)
+		) {
 			this.position.y = blockLeftPos.y * World.BLOCK_SIZE + World.BLOCK_SIZE;
 
 			this.velocity.y = 0;
@@ -176,7 +179,10 @@ class Player {
 		let pRightPos = this.getPlayerBottomCoords(true);
 		let blockRightPos = World.getBlockPositionByCoords(pRightPos);
 
-		if (world.world[blockLeftPos.x][blockLeftPos.y].solid || world.world[blockRightPos.x][blockRightPos.y].solid) {
+		if (
+			(world.world[blockLeftPos.x][blockLeftPos.y] && world.world[blockLeftPos.x][blockLeftPos.y].solid) ||
+			(world.world[blockRightPos.x][blockRightPos.y] && world.world[blockRightPos.x][blockRightPos.y].solid)
+		) {
 			this.isFalling = false;
 			this.velocity.y = 0;
 

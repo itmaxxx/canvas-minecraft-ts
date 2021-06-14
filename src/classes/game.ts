@@ -1,5 +1,5 @@
 import getMousePos from '../utils/getMousePos';
-import { Block } from './block';
+import { Block, BlockStrength } from './block';
 import { Air } from './blocksTypes';
 import Camera from './camera';
 import Coords from './coords';
@@ -48,7 +48,10 @@ class Game {
 			(pos.y - (pos.y % World.BLOCK_SIZE)) / World.BLOCK_SIZE
 		);
 
-		if (this.world.world[blockPos.x][blockPos.y].id !== -1) {
+		if (
+			this.world.world[blockPos.x][blockPos.y].id !== -1 &&
+			this.world.world[blockPos.x][blockPos.y].strength !== BlockStrength.INDESTRUCTABLE
+		) {
 			this.world.world[blockPos.x][blockPos.y] = Air;
 		}
 	}
@@ -185,6 +188,26 @@ class Game {
 		}
 	}
 
+	checkPlayerNotFallOutOfWorld() {
+		if (this.player.position.x <= World.BLOCK_SIZE * 2) {
+			this.player.position.x = World.BLOCK_SIZE * 2;
+		} else if (
+			this.player.position.x >=
+			World.WORLD_WIDTH * World.BLOCK_SIZE - Player.PLAYER_WIDTH - World.BLOCK_SIZE * 2 - 1
+		) {
+			this.player.position.x = World.WORLD_WIDTH * World.BLOCK_SIZE - Player.PLAYER_WIDTH - World.BLOCK_SIZE * 2 - 1;
+		}
+
+		if (this.player.position.y <= World.BLOCK_SIZE) {
+			this.player.position.y = World.BLOCK_SIZE;
+		} else if (
+			this.player.position.y >=
+			World.WORLD_HEIGHT * World.BLOCK_SIZE - Player.PLAYER_HEIGHT - World.BLOCK_SIZE * 3
+		) {
+			this.player.position.y = World.WORLD_HEIGHT * World.BLOCK_SIZE - Player.PLAYER_HEIGHT - World.BLOCK_SIZE * 3;
+		}
+	}
+
 	gameLoop(timeStamp: number) {
 		this.secondsPassed = (timeStamp - this.oldTimeStamp) / 1000;
 		this.oldTimeStamp = timeStamp;
@@ -195,18 +218,7 @@ class Game {
 
 		this.player.move(this.world);
 
-		if (this.player.position.x <= 0) {
-			this.player.position.x = 0;
-		}
-		if (this.player.position.x >= World.WORLD_WIDTH * World.BLOCK_SIZE - Player.PLAYER_WIDTH) {
-			this.player.position.x = World.WORLD_WIDTH * World.BLOCK_SIZE - Player.PLAYER_WIDTH;
-		}
-		if (this.player.position.y <= 0) {
-			this.player.position.y = 0;
-		}
-		if (this.player.position.y >= World.WORLD_HEIGHT * World.BLOCK_SIZE - Player.PLAYER_HEIGHT) {
-			this.player.position.y = World.WORLD_HEIGHT * World.BLOCK_SIZE - Player.PLAYER_HEIGHT;
-		}
+		this.checkPlayerNotFallOutOfWorld();
 
 		this.camera.offset = new Coords(
 			this.player.position.x - this.canvas.width / 2 + Player.PLAYER_WIDTH,

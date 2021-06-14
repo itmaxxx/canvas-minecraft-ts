@@ -10,6 +10,7 @@ export const BackgroundPlanks = new Block(4, false, false, BlockStrength.NORMAL)
 export const StoneSlab = new Block(5, true, false, BlockStrength.STRONG);
 export const Bricks = new Block(7, true, false, BlockStrength.STRONG);
 export const CobbleStone = new Block(16, true, false, BlockStrength.STRONG);
+export const Bedrock = new Block(17, true, false, BlockStrength.INDESTRUCTABLE);
 export const WoodenLog = new Block(20, true, false, BlockStrength.STRONG);
 export const BackgroundWoodenLog = new Block(20, false, false, BlockStrength.STRONG);
 export const Bookshelf = new Block(35, true, false, BlockStrength.NORMAL);

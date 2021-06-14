@@ -1,5 +1,5 @@
 import { Block } from './block';
-import { Dirt, Stone, Grass, Air, TargetBlock, Ladder } from './blocksTypes';
+import { Dirt, Stone, Grass, Air, TargetBlock, Ladder, Bedrock } from './blocksTypes';
 import Camera from './camera';
 import Coords from './coords';
 
@@ -60,14 +60,18 @@ class World {
 		let verticalBlockStart = (screenVerticalStart - (screenVerticalStart % 64)) / 64,
 			verticalBlockEnd = (screenVerticalEnd - (screenVerticalEnd % 64)) / 64;
 
-		for (let y = 0; y < this.world.length; y++) {
-			for (let x = 0; x < this.world[y].length; x++) {
+		for (let x = 0; x < this.world.length; x++) {
+			for (let y = 0; y < this.world[x].length; y++) {
 				if (
 					x >= horizontalBlockStart &&
 					x <= horizontalBlockEnd &&
 					y >= verticalBlockStart &&
 					y <= verticalBlockEnd + 1
 				) {
+					if (!this.world[x][y]) {
+						continue;
+					}
+
 					if (this.world[x][y].id !== -1) {
 						this.drawBlock(
 							this.world[x][y].solid ? this.tileSetForeground : this.tileSetBackground,
@@ -87,14 +91,16 @@ class World {
 			let row: Array<Block> = [];
 
 			for (let y = 0; y < World.WORLD_HEIGHT; y++) {
-				if (y > 10) {
+				if (y >= World.WORLD_HEIGHT - 4) {
+					row.push(Bedrock);
+				} else if (y > 10) {
 					row.push(Stone);
 				} else if (y > 8) {
 					row.push(Dirt);
 				} else if (y > 7) {
 					row.push(Grass);
 				} else {
-					if (x === 0 && y > 2) {
+					if (x === 2 && y > 2) {
 						row.push(Ladder);
 					} else {
 						row.push(Air);
