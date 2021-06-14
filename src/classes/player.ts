@@ -16,7 +16,7 @@ class Player {
 	isFalling: boolean;
 	isClimbing: boolean;
 	jumpStrength: number;
-  lastJump: number;
+	lastJump: number;
 	moveSpeed: number;
 
 	skin: HTMLImageElement;
@@ -29,7 +29,7 @@ class Player {
 		this.isFalling = false;
 		this.isClimbing = false;
 		this.jumpStrength = 23;
-    this.lastJump = 0;
+		this.lastJump = 0;
 		this.moveSpeed = 3;
 
 		this.skin = new Image();
@@ -63,10 +63,10 @@ class Player {
 			}
 		} else if (this.moveDirection.up && Date.now() - this.lastJump > 400 && !this.isClimbing) {
 			this.velocity.y -= this.jumpStrength;
-      this.lastJump = Date.now();
+			this.lastJump = Date.now();
 		}
 
-    this.position.y += this.velocity.y;
+		this.position.y += this.velocity.y;
 
 		this.checkPlayerCollisionTop(world);
 		this.checkPlayerCollisionBottom(world);
@@ -170,7 +170,7 @@ class Player {
 
 		if (world.world[blockLeftPos.x][blockLeftPos.y].solid || world.world[blockRightPos.x][blockRightPos.y].solid) {
 			this.isFalling = false;
-      this.velocity.y = 0;
+			this.velocity.y = 0;
 
 			this.setPlayerPositionByBottomCoords(
 				new Coords(this.position.x, blockLeftPos.y * World.BLOCK_SIZE - World.BLOCK_SIZE * 4)

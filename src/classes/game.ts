@@ -1,8 +1,10 @@
 import getMousePos from '../utils/getMousePos';
-import { Air } from './blockTypes';
+import { Block } from './block';
+import { Air } from './blocksTypes';
 import Camera from './camera';
 import Coords from './coords';
 import Inventory from './inventory';
+import InventorySlot from './inventorySlot';
 import Player from './player';
 import World from './world';
 
@@ -63,12 +65,20 @@ class Game {
 		);
 
 		if (this.inventory.getActiveSlot().block.solid) {
-			if ((blockPos.x * World.BLOCK_SIZE >= this.player.position.x && blockPos.x * World.BLOCK_SIZE <= this.player.position.x + Player.PLAYER_WIDTH ||
-					 blockPos.x * World.BLOCK_SIZE + World.BLOCK_SIZE >= this.player.position.x && blockPos.x * World.BLOCK_SIZE + World.BLOCK_SIZE <= this.player.position.x + Player.PLAYER_WIDTH ||
-					 blockPos.x * World.BLOCK_SIZE + World.BLOCK_SIZE / 2 >= this.player.position.x && blockPos.x * World.BLOCK_SIZE + World.BLOCK_SIZE / 2 <= this.player.position.x + Player.PLAYER_WIDTH) &&
-				  (blockPos.y * World.BLOCK_SIZE > this.player.position.y && blockPos.y * World.BLOCK_SIZE < this.player.position.y + Player.PLAYER_HEIGHT ||
-					 blockPos.y * World.BLOCK_SIZE + World.BLOCK_SIZE > this.player.position.y && blockPos.y * World.BLOCK_SIZE + World.BLOCK_SIZE < this.player.position.y + Player.PLAYER_HEIGHT ||
-					 blockPos.y * World.BLOCK_SIZE + World.BLOCK_SIZE / 2 > this.player.position.y && blockPos.y * World.BLOCK_SIZE + World.BLOCK_SIZE / 2 < this.player.position.y + Player.PLAYER_HEIGHT)) {
+			if (
+				((blockPos.x * World.BLOCK_SIZE >= this.player.position.x &&
+					blockPos.x * World.BLOCK_SIZE <= this.player.position.x + Player.PLAYER_WIDTH) ||
+					(blockPos.x * World.BLOCK_SIZE + World.BLOCK_SIZE >= this.player.position.x &&
+						blockPos.x * World.BLOCK_SIZE + World.BLOCK_SIZE <= this.player.position.x + Player.PLAYER_WIDTH) ||
+					(blockPos.x * World.BLOCK_SIZE + World.BLOCK_SIZE / 2 >= this.player.position.x &&
+						blockPos.x * World.BLOCK_SIZE + World.BLOCK_SIZE / 2 <= this.player.position.x + Player.PLAYER_WIDTH)) &&
+				((blockPos.y * World.BLOCK_SIZE > this.player.position.y &&
+					blockPos.y * World.BLOCK_SIZE < this.player.position.y + Player.PLAYER_HEIGHT) ||
+					(blockPos.y * World.BLOCK_SIZE + World.BLOCK_SIZE > this.player.position.y &&
+						blockPos.y * World.BLOCK_SIZE + World.BLOCK_SIZE < this.player.position.y + Player.PLAYER_HEIGHT) ||
+					(blockPos.y * World.BLOCK_SIZE + World.BLOCK_SIZE / 2 > this.player.position.y &&
+						blockPos.y * World.BLOCK_SIZE + World.BLOCK_SIZE / 2 < this.player.position.y + Player.PLAYER_HEIGHT))
+			) {
 				return console.log('block intersects with player');
 			}
 		}
@@ -107,6 +117,19 @@ class Game {
 				case 'ArrowDown':
 					this.camera.moveDirection.down = true;
 					break;
+				case 'Enter':
+					let blocksNamesList = Object.keys(require('./blocksTypes'));
+					let blockListText = blocksNamesList.map((b, i) => i + ':' + b);
+
+					let blockID = prompt(`Select block id from list:\n${blockListText.join('\n')}`).trim();
+
+					if (parseInt(blockID)) {
+						let blocksList: Block[] = Object.values(require('./blocksTypes'));
+						this.inventory.slots[this.inventory.activeSlotNum - 1] = new InventorySlot(
+							blocksList[parseInt(blockID)],
+							64
+						);
+					}
 			}
 		}
 	}
@@ -141,8 +164,14 @@ class Game {
 	}
 
 	checkPlayerClimbing() {
-		let playerPos = new Coords(this.player.position.x + Player.PLAYER_WIDTH / 2, this.player.position.y + Player.PLAYER_HEIGHT / 2);
-		let playerBlockPos = new Coords((playerPos.x - playerPos.x % 64) / World.BLOCK_SIZE, (playerPos.y - playerPos.y % 64) / World.BLOCK_SIZE);
+		let playerPos = new Coords(
+			this.player.position.x + Player.PLAYER_WIDTH / 2,
+			this.player.position.y + Player.PLAYER_HEIGHT / 2
+		);
+		let playerBlockPos = new Coords(
+			(playerPos.x - (playerPos.x % 64)) / World.BLOCK_SIZE,
+			(playerPos.y - (playerPos.y % 64)) / World.BLOCK_SIZE
+		);
 
 		if (this.world.world[playerBlockPos.x][playerBlockPos.y].climbing) {
 			this.player.isClimbing = true;

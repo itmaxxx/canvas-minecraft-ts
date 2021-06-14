@@ -1,5 +1,5 @@
 import { Block } from './block';
-import { Dirt, Stone, Grass, Air, TargetBlock } from './blockTypes';
+import { Dirt, Stone, Grass, Air, TargetBlock, Ladder } from './blocksTypes';
 import Camera from './camera';
 import Coords from './coords';
 
@@ -56,7 +56,7 @@ class World {
 		let horizontalBlockStart = (screenHorizontalStart - (screenHorizontalStart % 64)) / 64,
 			horizontalBlockEnd = (screenHorizontalEnd - (screenHorizontalEnd % 64)) / 64;
 		let screenVerticalStart = camera.offset.y,
-			screenVerticalEnd = camera.offset.y + canvas.width;
+			screenVerticalEnd = camera.offset.y + canvas.height;
 		let verticalBlockStart = (screenVerticalStart - (screenVerticalStart % 64)) / 64,
 			verticalBlockEnd = (screenVerticalEnd - (screenVerticalEnd % 64)) / 64;
 
@@ -69,7 +69,13 @@ class World {
 					y <= verticalBlockEnd + 1
 				) {
 					if (this.world[x][y].id !== -1) {
-						this.drawBlock(this.world[x][y].solid ? this.tileSetForeground : this.tileSetBackground, ctx, new Coords(x, y), this.world[x][y], camera);
+						this.drawBlock(
+							this.world[x][y].solid ? this.tileSetForeground : this.tileSetBackground,
+							ctx,
+							new Coords(x, y),
+							this.world[x][y],
+							camera
+						);
 					}
 				}
 			}
@@ -88,7 +94,11 @@ class World {
 				} else if (y > 7) {
 					row.push(Grass);
 				} else {
-					row.push(Air);
+					if (x === 0 && y > 2) {
+						row.push(Ladder);
+					} else {
+						row.push(Air);
+					}
 				}
 			}
 
