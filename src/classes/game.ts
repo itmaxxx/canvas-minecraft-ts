@@ -16,6 +16,7 @@ class Game {
 	player: Player;
 	inventory: Inventory;
 	targetBlockPosition: Coords;
+	mousePosition: Coords;
 
 	secondsPassed: number;
 	oldTimeStamp: number;
@@ -29,6 +30,7 @@ class Game {
 		this.player = new Player();
 		this.inventory = new Inventory();
 		this.targetBlockPosition = new Coords(0, 0);
+		this.mousePosition = new Coords(0, 0);
 
 		this.secondsPassed = 0;
 		this.oldTimeStamp = 0;
@@ -36,11 +38,7 @@ class Game {
 	}
 
 	handleMouseMove(e: MouseEvent) {
-		let pos = getMousePos(this.canvas, e, this.camera.offset);
-		this.targetBlockPosition = new Coords(
-			(pos.x - (pos.x % World.BLOCK_SIZE)) / World.BLOCK_SIZE,
-			(pos.y - (pos.y % World.BLOCK_SIZE)) / World.BLOCK_SIZE
-		);
+		this.mousePosition = getMousePos(this.canvas, e, new Coords(0, 0));
 	}
 
 	handleMouseClick(e: MouseEvent) {
@@ -219,18 +217,27 @@ class Game {
 		this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
 
 		this.world.renderBlocks(this.camera, this.canvas, this.ctx);
+
+		this.targetBlockPosition = new Coords(
+			(this.camera.offset.x +
+				this.mousePosition.x -
+				((this.camera.offset.x + this.mousePosition.x) % World.BLOCK_SIZE)) /
+				World.BLOCK_SIZE,
+			(this.camera.offset.y +
+				this.mousePosition.y -
+				((this.camera.offset.y + this.mousePosition.y) % World.BLOCK_SIZE)) /
+				World.BLOCK_SIZE
+		);
 		this.world.drawTargetBlock(this.ctx, this.targetBlockPosition, this.camera);
 
 		this.player.drawPlayer(this.ctx, this.camera);
 
-		// drawInventoryBar();
-
-		this.ctx.font = '25px Arial';
+		this.ctx.font = '20px Minecraft, Arial';
 		this.ctx.fillStyle = 'white';
 		this.ctx.fillText(
-			`FPS: ${this.fps} X: ${this.player.position.x.toFixed(2)} Y: ${this.player.position.y.toFixed(2)} OX: ${
-				this.camera.offset.x
-			} OY: ${this.camera.offset.y}`,
+			`FPS: ${this.fps} X: ${this.player.position.x.toFixed(2)} Y: ${this.player.position.y.toFixed(
+				2
+			)} OX: ${this.camera.offset.x.toFixed(2)} OY: ${this.camera.offset.y.toFixed(2)}`,
 			10,
 			30
 		);
