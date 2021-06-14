@@ -68,7 +68,7 @@ class Game {
 			if (
 				((blockPos.x * World.BLOCK_SIZE >= this.player.position.x &&
 					blockPos.x * World.BLOCK_SIZE <= this.player.position.x + Player.PLAYER_WIDTH) ||
-					(blockPos.x * World.BLOCK_SIZE + World.BLOCK_SIZE >= this.player.position.x &&
+					(blockPos.x * World.BLOCK_SIZE + World.BLOCK_SIZE > this.player.position.x &&
 						blockPos.x * World.BLOCK_SIZE + World.BLOCK_SIZE <= this.player.position.x + Player.PLAYER_WIDTH) ||
 					(blockPos.x * World.BLOCK_SIZE + World.BLOCK_SIZE / 2 >= this.player.position.x &&
 						blockPos.x * World.BLOCK_SIZE + World.BLOCK_SIZE / 2 <= this.player.position.x + Player.PLAYER_WIDTH)) &&
