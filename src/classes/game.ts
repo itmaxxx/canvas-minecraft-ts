@@ -42,50 +42,58 @@ class Game {
 	}
 
 	handleMouseClick(e: MouseEvent) {
-		let pos = getMousePos(this.canvas, e, this.camera.offset);
-		let blockPos = new Coords(
-			(pos.x - (pos.x % World.BLOCK_SIZE)) / World.BLOCK_SIZE,
-			(pos.y - (pos.y % World.BLOCK_SIZE)) / World.BLOCK_SIZE
-		);
+		try {
+			let pos = getMousePos(this.canvas, e, this.camera.offset);
+			let blockPos = new Coords(
+				(pos.x - (pos.x % World.BLOCK_SIZE)) / World.BLOCK_SIZE,
+				(pos.y - (pos.y % World.BLOCK_SIZE)) / World.BLOCK_SIZE
+			);
 
-		if (
-			this.world.world[blockPos.x][blockPos.y].id !== -1 &&
-			this.world.world[blockPos.x][blockPos.y].strength !== BlockStrength.INDESTRUCTABLE
-		) {
-			this.world.world[blockPos.x][blockPos.y] = Air;
+			if (
+				this.world.world[blockPos.x][blockPos.y].id !== -1 &&
+				this.world.world[blockPos.x][blockPos.y].strength !== BlockStrength.INDESTRUCTABLE
+			) {
+				this.world.world[blockPos.x][blockPos.y] = Air;
+			}
+		} catch (e) {
+			console.log(e);
 		}
 	}
 
 	handleContextMenuClick(e: MouseEvent) {
-		e.preventDefault();
+		try {
+			e.preventDefault();
 
-		let pos = getMousePos(this.canvas, e, this.camera.offset);
-		let blockPos = new Coords(
-			(pos.x - (pos.x % World.BLOCK_SIZE)) / World.BLOCK_SIZE,
-			(pos.y - (pos.y % World.BLOCK_SIZE)) / World.BLOCK_SIZE
-		);
+			let pos = getMousePos(this.canvas, e, this.camera.offset);
+			let blockPos = new Coords(
+				(pos.x - (pos.x % World.BLOCK_SIZE)) / World.BLOCK_SIZE,
+				(pos.y - (pos.y % World.BLOCK_SIZE)) / World.BLOCK_SIZE
+			);
 
-		if (this.inventory.getActiveSlot().block.solid) {
-			if (
-				((blockPos.x * World.BLOCK_SIZE >= this.player.position.x &&
-					blockPos.x * World.BLOCK_SIZE <= this.player.position.x + Player.PLAYER_WIDTH) ||
-					(blockPos.x * World.BLOCK_SIZE + World.BLOCK_SIZE > this.player.position.x &&
-						blockPos.x * World.BLOCK_SIZE + World.BLOCK_SIZE <= this.player.position.x + Player.PLAYER_WIDTH) ||
-					(blockPos.x * World.BLOCK_SIZE + World.BLOCK_SIZE / 2 >= this.player.position.x &&
-						blockPos.x * World.BLOCK_SIZE + World.BLOCK_SIZE / 2 <= this.player.position.x + Player.PLAYER_WIDTH)) &&
-				((blockPos.y * World.BLOCK_SIZE > this.player.position.y &&
-					blockPos.y * World.BLOCK_SIZE < this.player.position.y + Player.PLAYER_HEIGHT) ||
-					(blockPos.y * World.BLOCK_SIZE + World.BLOCK_SIZE > this.player.position.y &&
-						blockPos.y * World.BLOCK_SIZE + World.BLOCK_SIZE < this.player.position.y + Player.PLAYER_HEIGHT) ||
-					(blockPos.y * World.BLOCK_SIZE + World.BLOCK_SIZE / 2 > this.player.position.y &&
-						blockPos.y * World.BLOCK_SIZE + World.BLOCK_SIZE / 2 < this.player.position.y + Player.PLAYER_HEIGHT))
-			) {
-				return console.log('block intersects with player');
+			if (this.inventory.getActiveSlot().block.solid) {
+				if (
+					((blockPos.x * World.BLOCK_SIZE >= this.player.position.x &&
+						blockPos.x * World.BLOCK_SIZE <= this.player.position.x + Player.PLAYER_WIDTH) ||
+						(blockPos.x * World.BLOCK_SIZE + World.BLOCK_SIZE > this.player.position.x &&
+							blockPos.x * World.BLOCK_SIZE + World.BLOCK_SIZE <= this.player.position.x + Player.PLAYER_WIDTH) ||
+						(blockPos.x * World.BLOCK_SIZE + World.BLOCK_SIZE / 2 >= this.player.position.x &&
+							blockPos.x * World.BLOCK_SIZE + World.BLOCK_SIZE / 2 <= this.player.position.x + Player.PLAYER_WIDTH)) &&
+					((blockPos.y * World.BLOCK_SIZE > this.player.position.y &&
+						blockPos.y * World.BLOCK_SIZE < this.player.position.y + Player.PLAYER_HEIGHT) ||
+						(blockPos.y * World.BLOCK_SIZE + World.BLOCK_SIZE > this.player.position.y &&
+							blockPos.y * World.BLOCK_SIZE + World.BLOCK_SIZE < this.player.position.y + Player.PLAYER_HEIGHT) ||
+						(blockPos.y * World.BLOCK_SIZE + World.BLOCK_SIZE / 2 > this.player.position.y &&
+							blockPos.y * World.BLOCK_SIZE + World.BLOCK_SIZE / 2 < this.player.position.y + Player.PLAYER_HEIGHT))
+				) {
+					return console.log('block intersects with player');
+				}
 			}
-		}
 
-		if (this.world.world[blockPos.x][blockPos.y].id === -1 && this.inventory.getActiveSlot().block.id !== -1) {
-			this.world.world[blockPos.x][blockPos.y] = this.inventory.getActiveSlot().block;
+			if (this.world.world[blockPos.x][blockPos.y].id === -1 && this.inventory.getActiveSlot().block.id !== -1) {
+				this.world.world[blockPos.x][blockPos.y] = this.inventory.getActiveSlot().block;
+			}
+		} catch (e) {
+			console.log(e);
 		}
 	}
 
