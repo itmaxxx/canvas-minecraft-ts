@@ -197,6 +197,19 @@ class Game {
 
 		this.player.move(this.world);
 
+		if (this.player.position.x <= 0) {
+			this.player.position.x = 0;
+		}
+		if (this.player.position.x >= World.WORLD_WIDTH * World.BLOCK_SIZE - Player.PLAYER_WIDTH) {
+			this.player.position.x = World.WORLD_WIDTH * World.BLOCK_SIZE - Player.PLAYER_WIDTH;
+		}
+		if (this.player.position.y <= 0) {
+			this.player.position.y = 0;
+		}
+		if (this.player.position.y >= World.WORLD_HEIGHT * World.BLOCK_SIZE - Player.PLAYER_HEIGHT) {
+			this.player.position.y = World.WORLD_HEIGHT * World.BLOCK_SIZE - Player.PLAYER_HEIGHT;
+		}
+
 		this.camera.offset = new Coords(
 			this.player.position.x - this.canvas.width / 2 + Player.PLAYER_WIDTH,
 			this.player.position.y - this.canvas.height / 2 + Player.PLAYER_HEIGHT
