@@ -235,9 +235,8 @@ class Game {
 		this.ctx.font = '20px Minecraft, Arial';
 		this.ctx.fillStyle = 'white';
 		this.ctx.fillText(
-			`FPS: ${this.fps} X: ${this.player.position.x.toFixed(2)} Y: ${this.player.position.y.toFixed(
-				2
-			)} OX: ${this.camera.offset.x.toFixed(2)} OY: ${this.camera.offset.y.toFixed(2)}`,
+			`FPS: ${this.fps} X: ${this.player.position.x.toFixed(2)} Y: ${this.player.position.y.toFixed(2)}`,
+			// OX: ${this.camera.offset.x.toFixed(2)} OY: ${this.camera.offset.y.toFixed(2)}
 			10,
 			30
 		);

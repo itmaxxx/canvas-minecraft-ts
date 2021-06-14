@@ -1,16 +1,5 @@
 import InventorySlot from './inventorySlot';
-import {
-	Grass,
-	Dirt,
-	Stone,
-	Air,
-	BackgroundDirt,
-	Ladder,
-	Planks,
-	StoneSlab,
-	Bricks,
-	BackgroundPlanks
-} from './blocksTypes';
+import { Grass, Air } from './blocksTypes';
 
 class Inventory {
 	activeSlotNum: number;
