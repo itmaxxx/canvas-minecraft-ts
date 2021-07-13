@@ -93,18 +93,14 @@ class World {
 			for (let y = 0; y < World.WORLD_HEIGHT; y++) {
 				if (y >= World.WORLD_HEIGHT - 4) {
 					row.push(Bedrock);
-				} else if (y > 10) {
+				} else if (y > 12) {
 					row.push(Stone);
-				} else if (y > 8) {
+				} else if (y > 10) {
 					row.push(Dirt);
-				} else if (y > 7) {
+				} else if (y > 9) {
 					row.push(Grass);
 				} else {
-					if (x === 2 && y > 2) {
-						row.push(Ladder);
-					} else {
-						row.push(Air);
-					}
+					row.push(Air);
 				}
 			}
 

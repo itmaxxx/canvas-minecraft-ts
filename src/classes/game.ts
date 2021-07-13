@@ -28,6 +28,7 @@ class Game {
 		this.world = new World();
 		this.camera = new Camera(new Coords(0, 0));
 		this.player = new Player();
+		this.player.position = new Coords((World.WORLD_WIDTH * World.BLOCK_SIZE) / 2, 0);
 		this.inventory = new Inventory();
 		this.targetBlockPosition = new Coords(0, 0);
 		this.mousePosition = new Coords(0, 0);
@@ -117,26 +118,13 @@ class Game {
 				case 'Space':
 					this.player.jumpPressed = true;
 					break;
-				// case 'ArrowLeft':
-				// 	this.camera.moveDirection.left = true;
-				// 	break;
-				// case 'ArrowRight':
-				// 	this.camera.moveDirection.right = true;
-				// 	break;
-				// case 'ArrowUp':
-				// 	this.camera.moveDirection.up = true;
-				// 	break;
-				// case 'ArrowDown':
-				// 	this.camera.moveDirection.down = true;
-				// 	break;
 				case 'Enter':
-					let blocksNamesList = Object.keys(require('./blocksTypes'));
-					let blockListText = blocksNamesList.map((b, i) => i + ':' + b);
+					let blocksList: Block[] = Object.values(require('./blocksTypes'));
+					let blockListText = blocksList.map((b, i) => i + ':' + b.name);
 
 					let blockID = prompt(`Select block id from list:\n${blockListText.join('\n')}`).trim();
 
 					if (parseInt(blockID)) {
-						let blocksList: Block[] = Object.values(require('./blocksTypes'));
 						this.inventory.slots[this.inventory.activeSlotNum - 1] = new InventorySlot(
 							blocksList[parseInt(blockID)],
 							64
@@ -164,18 +152,6 @@ class Game {
 				this.player.jumpPressed = false;
 				this.player.canJump = true;
 				break;
-			// case 'ArrowLeft':
-			// 	this.camera.moveDirection.left = false;
-			// 	break;
-			// case 'ArrowRight':
-			// 	this.camera.moveDirection.right = false;
-			// 	break;
-			// case 'ArrowUp':
-			// 	this.camera.moveDirection.up = false;
-			// 	break;
-			// case 'ArrowDown':
-			// 	this.camera.moveDirection.down = false;
-			// 	break;
 		}
 	}
 
@@ -256,10 +232,11 @@ class Game {
 		this.ctx.fillStyle = 'white';
 		this.ctx.fillText(
 			`FPS: ${this.fps} X: ${this.player.position.x.toFixed(2)} Y: ${this.player.position.y.toFixed(2)}`,
-			// OX: ${this.camera.offset.x.toFixed(2)} OY: ${this.camera.offset.y.toFixed(2)}
 			10,
 			30
 		);
+
+		this.ctx.fillText(`Selected block: ${this.inventory.getActiveSlot().block.name}`, 10, this.canvas.height - 15);
 
 		window.requestAnimationFrame((timeStamp: number) => this.gameLoop(timeStamp));
 	}
