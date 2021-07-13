@@ -15,6 +15,7 @@ export const Bedrock = new Block(17, true, false, BlockStrength.INDESTRUCTABLE, 
 export const WoodenLog = new Block(20, true, false, BlockStrength.STRONG, 'Wooden Log');
 export const BackgroundWoodenLog = new Block(20, false, false, BlockStrength.STRONG, 'Background Wooden Log');
 export const Bookshelf = new Block(35, true, false, BlockStrength.NORMAL, 'Bookshelf');
+export const BackgroundBookshelf = new Block(35, false, false, BlockStrength.NORMAL, 'BackgroundBookshelf');
 export const TargetBlock = new Block(41, false, false, BlockStrength.INDESTRUCTABLE, 'Target Block');
 export const Glass = new Block(49, true, false, BlockStrength.WEAK, 'Glass');
 export const BackgroundGlass = new Block(49, false, false, BlockStrength.WEAK, 'Background Glass');
