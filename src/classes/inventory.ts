@@ -2,14 +2,14 @@ import InventorySlot from './inventorySlot';
 import {
 	Grass,
 	Air,
-	Bricks,
 	Planks,
 	WoodenLog,
 	BackgroundWoodenLog,
 	BackgroundPlanks,
 	BackgroundGlass,
 	Ladder,
-	Dirt
+	Dirt,
+	BackgroundBookshelf
 } from './blocksTypes';
 
 class Inventory {
@@ -25,7 +25,7 @@ class Inventory {
 		// }
 
 		this.slots[0] = new InventorySlot(Grass, 64);
-		this.slots[1] = new InventorySlot(Bricks, 64);
+		this.slots[1] = new InventorySlot(BackgroundBookshelf, 64);
 		this.slots[2] = new InventorySlot(Planks, 64);
 		this.slots[3] = new InventorySlot(BackgroundPlanks, 64);
 		this.slots[4] = new InventorySlot(WoodenLog, 64);
