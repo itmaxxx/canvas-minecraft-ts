@@ -1,6 +1,6 @@
 import getMousePos from '../utils/getMousePos';
 import { Block, BlockStrength } from './block';
-import { Air } from './blocksTypes';
+import { Air, Dirt } from './blocksTypes';
 import Camera from './camera';
 import Coords from './coords';
 import Inventory from './inventory';
@@ -92,6 +92,14 @@ class Game {
 
 			if (this.world.world[blockPos.x][blockPos.y].id === -1 && this.inventory.getActiveSlot().block.id !== -1) {
 				this.world.world[blockPos.x][blockPos.y] = this.inventory.getActiveSlot().block;
+
+				if (
+					blockPos.y < World.WORLD_HEIGHT &&
+					this.inventory.getActiveSlot().block.name.toLowerCase().indexOf('background') === -1 &&
+					this.world.world[blockPos.x][blockPos.y + 1].name === 'Grass'
+				) {
+					this.world.world[blockPos.x][blockPos.y + 1] = Dirt;
+				}
 			}
 		} catch (e) {
 			console.log(e);

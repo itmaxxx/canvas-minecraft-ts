@@ -1,3 +1,4 @@
+import randomInteger from '../utils/randomMinMax';
 import { Block } from './block';
 import { Dirt, Stone, Grass, Air, TargetBlock, Ladder, Bedrock } from './blocksTypes';
 import Camera from './camera';
@@ -87,17 +88,27 @@ class World {
 	}
 
 	generateWorld() {
+		let prevHeight = 0;
+
 		for (let x = 0; x < World.WORLD_WIDTH; x++) {
 			let row: Array<Block> = [];
+			let randHeight = randomInteger(0, 1);
+			let height = randHeight === 1 ? prevHeight + 1 : prevHeight - 1;
+
+			if (height >= 3) {
+				height = 2;
+			}
+
+			prevHeight = height;
 
 			for (let y = 0; y < World.WORLD_HEIGHT; y++) {
 				if (y >= World.WORLD_HEIGHT - 4) {
 					row.push(Bedrock);
-				} else if (y > 12) {
+				} else if (y > 13 - height) {
 					row.push(Stone);
-				} else if (y > 10) {
+				} else if (y > 10 - height) {
 					row.push(Dirt);
-				} else if (y > 9) {
+				} else if (y > 9 - height) {
 					row.push(Grass);
 				} else {
 					row.push(Air);
