@@ -4,7 +4,11 @@
 - Typescript
 
 ## Demo
-[Try now](https://itmaxxx.github.io/canvas-minecraft-ts/dist/index.html) (not final build)
+[Try now](https://itmaxxx.github.io/canvas-minecraft-ts/dist/index.html)
+
+## Preview
+
+[![Game preview](https://img.youtube.com/vi/etcEsJ4gV-o/0.jpg)](https://www.youtube.com/watch?v=etcEsJ4gV-o)
 
 ## How to play
 | Keys | Action |
